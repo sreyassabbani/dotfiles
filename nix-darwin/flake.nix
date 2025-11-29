@@ -121,6 +121,7 @@
               brews = [
                 "stow"
                 "mas"
+                "gh"
                 "tldr"
                 "tree"
               ];

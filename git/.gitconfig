@@ -1,6 +1,16 @@
 [user]
     name = Sreyas Sabbani
     email = sreyassabbani@gmail.com
+    signingkey = 688241BB0F9A860B
+
+[gpg]
+    program = gpg
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgsign = true
 
 [core]
     editor = hx
