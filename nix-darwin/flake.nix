@@ -176,6 +176,20 @@
 
             system.defaults = {
               dock.autohide = true;
+              dock.show-recents = false;
+
+              # Pinned apps in the Dock
+              dock.persistent-apps = [
+                # Core macOS apps
+                # { app = "/System/Library/CoreServices/Finder.app"; }
+                # { app = "/System/Applications/Apps.app"; }
+
+                # GUI apps you installed
+                { app = "/Applications/Ghostty.app"; }
+                { app = "/Applications/Zen.app"; }
+              ];
+
+              dock.persistent-others = [ ];
             };
 
             fonts.packages = with pkgs; [
