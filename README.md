@@ -1,10 +1,10 @@
 # Nix is *amazing*
 
-Laptop:
+laptop:
 
 - 13" M4 Air, 24/512 GB
 
-Some Fav Software:
+some fav software:
 
 - Ghostty
 - Helix
