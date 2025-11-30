@@ -87,356 +87,367 @@
               users.${username} =
                 { pkgs, ... }:
                 {
-                  home.username = username;
-                  home.homeDirectory = "/Users/${username}";
-                  home.enableNixpkgsReleaseCheck = false;
-                  home.stateVersion = "25.05";
-
-                  programs.home-manager.enable = true;
-
-                  ########################################
-                  # Git Config
-                  ########################################
-                  programs.git = {
-                    enable = true;
-
-                    signing = {
-                      key = "688241BB0F9A860B";
-                      signByDefault = true;
-                    };
-
-                    settings = {
-                      user = {
-                        name = "Sreyas Sabbani";
-                        email = "sreyassabbani@gmail.com";
-                      };
-
-                      gpg.program = "gpg";
-
-                      core = {
-                        editor = "hx";
-                        autocrlf = "input";
-                      };
-
-                      init.defaultBranch = "main";
-                      pull.rebase = true;
-                      merge.conflictstyle = "zdiff3";
-                      color.ui = "auto";
-                      commit.gpgsign = true;
-                      tag.gpgsign = true;
-
-                      alias = {
-                        sl = "log --oneline";
-                        st = "status -sb";
-                        co = "checkout";
-                        br = "branch";
-                        ci = "commit";
-                        lg = "log --oneline --graph --decorate --all";
-                      };
+                  home = {
+                    username = username;
+                    homeDirectory = "/Users/${username}";
+                    enableNixpkgsReleaseCheck = false;
+                    stateVersion = "25.05";
+                    sessionVariables = {
+                      EDITOR = "hx";
                     };
                   };
 
-                  ########################################
-                  # SSH Config
-                  ########################################
-                  programs.ssh = {
-                    enable = true;
-                    enableDefaultConfig = false;
-
-                    matchBlocks."github.com" = {
-                      hostname = "github.com";
-                      user = "git";
-                      identityFile = "~/.ssh/id_ed25519";
-
-                      extraOptions = {
-                        AddKeysToAgent = "yes";
-                        UseKeychain = "yes";
-                      };
-                    };
-                  };
-
-                  ########################################
-                  # zsh
-                  ########################################
-                  programs.zsh = {
-                    enable = true;
-
-                    oh-my-zsh = {
+                  programs = {
+                    direnv = {
                       enable = true;
-                      plugins = [ "git" ];
-                      theme = "robbyrussell";
+                      enableBashIntegration = true; # see note on other shells below
+                      nix-direnv.enable = true;
                     };
 
-                    shellAliases = {
-                      dr = "sudo darwin-rebuild switch --flake ~/nix#${username}-${system}";
-                    };
+                    bash.enable = true; # see note on other shells below
 
-                    initContent = ''
-                      setopt PROMPT_SUBST
+                    home-manager.enable = true;
 
-                      function update_prompt() {
-                        PROMPT=""
+                    ########################################
+                    # Git Config
+                    ########################################
+                    git = {
+                      enable = true;
 
-                        if [[ $PWD == $HOME ]]; then
-                          PROMPT+=$'\n'
-                        else
-                          PROMPT+=$'\n%F{242}%~\n'
-                        fi
-
-                        PROMPT+=$'%F{130}%n %F{216}[λ]%f '
-                      }
-
-                      PS2=$'%F{242} [...]%f '
-
-                      autoload -U add-zsh-hook
-                      add-zsh-hook chpwd update_prompt
-                      update_prompt
-
-                      RPROMPT='%F{242}$(git rev-parse --is-inside-work-tree 2>/dev/null && echo "git:") %F{240}$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f'
-
-                      ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[245]%}[git:"
-                      ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-                      ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[242]%}] ✖ %{$reset_color%}"
-                      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[242]%}] ✔%{$reset_color%}"
-                    '';
-                  };
-
-                  ########################################
-                  # env variables
-                  ########################################
-                  home.sessionVariables = {
-                    EDITOR = "hx";
-                  };
-
-                  ########################################
-                  # Helix
-                  ########################################
-                  programs.helix = {
-                    enable = true;
-
-                    settings = {
-                      theme = "gruvbox";
-
-                      editor = {
-                        "line-number" = "relative";
-                        bufferline = "multiple";
-                        mouse = false;
-                        rulers = [ 120 ];
-                        "true-color" = true;
-                        "end-of-line-diagnostics" = "hint";
-
-                        "soft-wrap".enable = true;
-
-                        "inline-diagnostics" = {
-                          "cursor-line" = "error";
-                          "other-lines" = "disable";
-                        };
-
-                        "cursor-shape" = {
-                          insert = "bar";
-                          normal = "block";
-                          select = "underline";
-                        };
-
-                        "indent-guides" = {
-                          character = "╎";
-                          render = true;
-                        };
-
-                        "file-picker".hidden = false;
-
-                        statusline.left = [
-                          "mode"
-                          "spinner"
-                          "version-control"
-                          "file-name"
-                        ];
+                      signing = {
+                        key = "688241BB0F9A860B";
+                        signByDefault = true;
                       };
 
-                      keys = {
-                        normal = {
-                          space = {
-                            i = ":toggle lsp.display-inlay-hints";
-                            x = ":buffer-close";
-                            q = ":q!";
-                            "/" = "toggle_comments";
-                            ";" = "global_search";
-                            b = ":new";
-                            l = "select_all";
-                            z = ":toggle soft-wrap.enable";
-                          };
-
-                          X = "select_line_above";
-                          G = "goto_file_end";
-                          tab = ":buffer-next";
-                          "S-tab" = ":buffer-previous";
-
-                          "A-j" = [
-                            "extend_to_line_bounds"
-                            "delete_selection"
-                            "paste_after"
-                          ];
-
-                          "A-k" = [
-                            "extend_to_line_bounds"
-                            "delete_selection"
-                            "move_line_up"
-                            "paste_before"
-                          ];
-
-                          "*" = [
-                            "move_prev_word_start"
-                            "move_next_word_end"
-                            "search_selection"
-                            "search_next"
-                          ];
-
-                          "#" = [
-                            "move_prev_word_start"
-                            "move_next_word_end"
-                            "search_selection"
-                            "search_prev"
-                          ];
+                      settings = {
+                        user = {
+                          name = "Sreyas Sabbani";
+                          email = "sreyassabbani@gmail.com";
                         };
 
-                        select = {
-                          X = "select_line_above";
-                          space."/" = "toggle_comments";
+                        gpg.program = "gpg";
+
+                        core = {
+                          editor = "hx";
+                          autocrlf = "input";
+                        };
+
+                        init.defaultBranch = "main";
+                        pull.rebase = true;
+                        merge.conflictstyle = "zdiff3";
+                        color.ui = "auto";
+                        commit.gpgsign = true;
+                        tag.gpgsign = true;
+
+                        alias = {
+                          sl = "log --oneline";
+                          st = "status -sb";
+                          co = "checkout";
+                          br = "branch";
+                          ci = "commit";
+                          lg = "log --oneline --graph --decorate --all";
                         };
                       };
                     };
 
-                    languages = {
-                      editor."auto-format" = true;
+                    ########################################
+                    # SSH Config
+                    ########################################
+                    ssh = {
+                      enable = true;
+                      enableDefaultConfig = false;
 
-                      language = [
-                        {
-                          name = "typst";
-                          formatter.command = "typstyle";
-                          "auto-format" = true;
+                      matchBlocks."github.com" = {
+                        hostname = "github.com";
+                        user = "git";
+                        identityFile = "~/.ssh/id_ed25519";
+
+                        extraOptions = {
+                          AddKeysToAgent = "yes";
+                          UseKeychain = "yes";
+                        };
+                      };
+                    };
+
+                    ########################################
+                    # zsh
+                    ########################################
+                    zsh = {
+                      enable = true;
+
+                      oh-my-zsh = {
+                        enable = true;
+                        plugins = [ "git" ];
+                        theme = "robbyrussell";
+                      };
+
+                      shellAliases = {
+                        dr = "sudo darwin-rebuild switch --flake ~/nix#${username}-${system}";
+                      };
+
+                      initContent = ''
+                        setopt PROMPT_SUBST
+
+                        function update_prompt() {
+                          PROMPT=""
+
+                          if [[ $PWD == $HOME ]]; then
+                            PROMPT+=$'\n'
+                          else
+                            PROMPT+=$'\n%F{242}%~\n'
+                          fi
+
+                          PROMPT+=$'%F{130}%n %F{216}[λ]%f '
                         }
 
-                        {
-                          name = "python";
-                          "language-servers" = [
-                            "basedpyright"
-                            "ruff"
+                        PS2=$'%F{242} [...]%f '
+
+                        autoload -U add-zsh-hook
+                        add-zsh-hook chpwd update_prompt
+                        update_prompt
+
+                        RPROMPT='%F{242}$(git rev-parse --is-inside-work-tree 2>/dev/null && echo "git:") %F{240}$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f'
+
+                        ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[245]%}[git:"
+                        ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+                        ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[242]%}] ✖ %{$reset_color%}"
+                        ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[242]%}] ✔%{$reset_color%}"
+                      '';
+                    };
+
+                    ########################################
+                    # Helix
+                    ########################################
+                    helix = {
+                      enable = true;
+
+                      settings = {
+                        theme = "gruvbox";
+
+                        editor = {
+                          "line-number" = "relative";
+                          bufferline = "multiple";
+                          mouse = false;
+                          rulers = [ 120 ];
+                          "true-color" = true;
+                          "end-of-line-diagnostics" = "hint";
+
+                          "soft-wrap".enable = true;
+
+                          "inline-diagnostics" = {
+                            "cursor-line" = "error";
+                            "other-lines" = "disable";
+                          };
+
+                          "cursor-shape" = {
+                            insert = "bar";
+                            normal = "block";
+                            select = "underline";
+                          };
+
+                          "indent-guides" = {
+                            character = "╎";
+                            render = true;
+                          };
+
+                          "file-picker".hidden = false;
+
+                          statusline.left = [
+                            "mode"
+                            "spinner"
+                            "version-control"
+                            "file-name"
                           ];
-                          formatter = {
-                            command = "ruff";
-                            args = [
-                              "format"
-                              "-"
+                        };
+
+                        keys = {
+                          normal = {
+                            space = {
+                              i = ":toggle lsp.display-inlay-hints";
+                              x = ":buffer-close";
+                              q = ":q!";
+                              "/" = "toggle_comments";
+                              ";" = "global_search";
+                              b = ":new";
+                              l = "select_all";
+                              z = ":toggle soft-wrap.enable";
+                            };
+
+                            X = "select_line_above";
+                            G = "goto_file_end";
+                            tab = ":buffer-next";
+                            "S-tab" = ":buffer-previous";
+
+                            "A-j" = [
+                              "extend_to_line_bounds"
+                              "delete_selection"
+                              "paste_after"
+                            ];
+
+                            "A-k" = [
+                              "extend_to_line_bounds"
+                              "delete_selection"
+                              "move_line_up"
+                              "paste_before"
+                            ];
+
+                            "*" = [
+                              "move_prev_word_start"
+                              "move_next_word_end"
+                              "search_selection"
+                              "search_next"
+                            ];
+
+                            "#" = [
+                              "move_prev_word_start"
+                              "move_next_word_end"
+                              "search_selection"
+                              "search_prev"
                             ];
                           };
-                          "auto-format" = true;
-                        }
 
-                        {
-                          name = "c";
-                          "file-types" = [ "c" ];
-                          indent = {
-                            "tab-width" = 4;
-                            unit = "  ";
+                          select = {
+                            X = "select_line_above";
+                            space."/" = "toggle_comments";
                           };
-                        }
-
-                        {
-                          name = "json";
-                          indent = {
-                            "tab-width" = 4;
-                            unit = "  ";
-                          };
-                        }
-
-                        {
-                          name = "typescript";
-                          "auto-format" = true;
-                        }
-
-                        {
-                          name = "latex";
-                          "file-types" = [ "tex" ];
-                          "language-servers" = [ "texlab" ];
-                        }
-
-                        {
-                          name = "scss";
-                          "file-types" = [ "scss" ];
-                          grammar = "scss";
-                        }
-
-                        {
-                          name = "cpp";
-                          scope = "source.cpp";
-                          "file-types" = [
-                            "cpp"
-                            "h"
-                            "c"
-                            "hpp"
-                          ];
-                          "language-servers" = [ "clangd" ];
-                          formatter = {
-                            command = "clang-format";
-                            args = [ "--style=file" ];
-                          };
-                          "auto-format" = true;
-                          indent = {
-                            "tab-width" = 4;
-                            unit = "    ";
-                          };
-                        }
-
-                        {
-                          name = "nix";
-                          "file-types" = [ "nix" ];
-                          roots = [
-                            "flake.nix"
-                            "shell.nix"
-                            "default.nix"
-                          ];
-                          formatter = {
-                            command = "nixfmt";
-                          };
-                        }
-                      ];
-
-                      "language-server" = {
-                        basedpyright = {
-                          command = "basedpyright-langserver";
-                          args = [ "--stdio" ];
                         };
+                      };
 
-                        ruff = {
-                          command = "ruff";
-                          args = [ "server" ];
+                      languages = {
+                        editor."auto-format" = true;
+
+                        language = [
+                          {
+                            name = "typst";
+                            formatter.command = "typstyle";
+                            "auto-format" = true;
+                          }
+
+                          {
+                            name = "python";
+                            "language-servers" = [
+                              "basedpyright"
+                              "ruff"
+                            ];
+                            formatter = {
+                              command = "ruff";
+                              args = [
+                                "format"
+                                "-"
+                              ];
+                            };
+                            "auto-format" = true;
+                          }
+
+                          {
+                            name = "c";
+                            "file-types" = [ "c" ];
+                            indent = {
+                              "tab-width" = 4;
+                              unit = "  ";
+                            };
+                          }
+
+                          {
+                            name = "json";
+                            indent = {
+                              "tab-width" = 4;
+                              unit = "  ";
+                            };
+                          }
+
+                          {
+                            name = "typescript";
+                            "auto-format" = true;
+                          }
+
+                          {
+                            name = "latex";
+                            "file-types" = [ "tex" ];
+                            "language-servers" = [ "texlab" ];
+                          }
+
+                          {
+                            name = "scss";
+                            "file-types" = [ "scss" ];
+                            grammar = "scss";
+                          }
+
+                          {
+                            name = "cpp";
+                            scope = "source.cpp";
+                            "file-types" = [
+                              "cpp"
+                              "h"
+                              "c"
+                              "hpp"
+                            ];
+                            "language-servers" = [ "clangd" ];
+                            formatter = {
+                              command = "clang-format";
+                              args = [ "--style=file" ];
+                            };
+                            "auto-format" = true;
+                            indent = {
+                              "tab-width" = 4;
+                              unit = "    ";
+                            };
+                          }
+
+                          {
+                            name = "nix";
+                            "file-types" = [ "nix" ];
+                            roots = [
+                              "flake.nix"
+                              "shell.nix"
+                              "default.nix"
+                            ];
+                            formatter = {
+                              command = "nixfmt";
+                            };
+                          }
+                        ];
+
+                        "language-server" = {
+                          basedpyright = {
+                            command = "basedpyright-langserver";
+                            args = [ "--stdio" ];
+                          };
+
+                          ruff = {
+                            command = "ruff";
+                            args = [ "server" ];
+                          };
                         };
+                      };
+
+                    };
+
+                    ghostty = {
+                      enable = true;
+
+                      # Important: don't use pkgs.ghostty on macOS right now, it's broken.
+                      package = null;
+
+                      # Optional, but safe: avoids bat-syntax issues on mac
+                      installBatSyntax = false;
+
+                      settings = {
+                        theme = "Gruvbox Dark";
+
+                        window-padding-x = 30;
+                        # window-padding-y = "40,0"; # if you want this later
+
+                        font-size = 16;
+
+                        keybind = [
+                          "global:cmd+grave_accent=toggle_quick_terminal"
+                          "shift+enter=text:\\n"
+                        ];
                       };
                     };
                   };
-                  programs.ghostty = {
-                    enable = true;
 
-                    # Important: don't use pkgs.ghostty on macOS right now, it's broken.
-                    package = null;
-
-                    # Optional, but safe: avoids bat-syntax issues on mac
-                    installBatSyntax = false;
-
-                    settings = {
-                      theme = "Gruvbox Dark";
-
-                      window-padding-x = 30;
-                      # window-padding-y = "40,0"; # if you want this later
-
-                      font-size = 16;
-
-                      keybind = [
-                        "global:cmd+grave_accent=toggle_quick_terminal"
-                        "shift+enter=text:\\n"
-                      ];
-                    };
-                  };
                 };
             };
           }
@@ -480,6 +491,7 @@
               rustc
               cargo
               nixfmt-rfc-style
+              uv
             ];
 
             ########################################
