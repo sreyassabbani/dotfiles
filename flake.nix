@@ -278,6 +278,8 @@
                         ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
                         ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[242]%}] ✖ %{$reset_color%}"
                         ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[242]%}] ✔%{$reset_color%}"
+
+                        eval "$(zoxide init --cmd cd zsh)"
                       '';
                     };
 
@@ -557,6 +559,8 @@
               defaultbrowser
               fd
               nixfmt-rfc-style
+              zoxide
+              fzf
             ];
 
             ########################################
