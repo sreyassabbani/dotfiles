@@ -119,36 +119,11 @@
                   programs = {
                     direnv = {
                       enable = true;
-                      enableBashIntegration = true; # see note on other shells below
+                      enableZshIntegration = true; # see note on other shells below
                       nix-direnv.enable = true;
                     };
 
-                    # spicetify =
-                    # let
-                    #   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-                    # in
-                    # {
-                    #   enable = true;
-
-                    #   enabledExtensions = with spicePkgs.extensions; [
-                    #     adblock
-                    #     hidePodcasts
-                    #     shuffle # shuffle+ (special characters are sanitized out of extension names)
-                    #   ];
-                    #   enabledCustomApps = with spicePkgs.apps; [
-                    #     newReleases
-                    #     ncsVisualizer
-                    #   ];
-                    #   enabledSnippets = with spicePkgs.snippets; [
-                    #     rotatingCoverart
-                    #     pointer
-                    #   ];
-
-                    #   theme = spicePkgs.themes.catppuccin;
-                    #   colorScheme = "mocha";
-                    # };
-
-                    bash.enable = true; # see note on other shells below
+                    zsh.enable = true; # see note on other shells below
 
                     home-manager.enable = true;
 
@@ -288,7 +263,9 @@
               ];
 
               casks = [
+                "firefox"
                 "hammerspoon"
+                "google-chrome"
                 "notion"
                 "obsidian"
                 "codex"

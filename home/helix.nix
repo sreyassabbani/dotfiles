@@ -158,6 +158,7 @@
         {
           name = "cpp";
           scope = "source.cpp";
+          roots = [ ".clangd" "compile_commands.json" ".git" ];
           "file-types" = [
             "cpp"
             "h"
