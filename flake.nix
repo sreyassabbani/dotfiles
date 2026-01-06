@@ -105,6 +105,16 @@
                     ./home/helix.nix
                     ./home/git.nix
                   ];
+                  # launchd.agents.yabai = {
+                  #   enable = true;
+                  #   config = {
+                  #     ProgramArguments = [ "${pkgs.yabai}/bin/yabai" ];
+                  #     RunAtLoad = true;
+                  #     KeepAlive = true;
+                  #     StandardOutPath = "/tmp/yabai.out";
+                  #     StandardErrorPath = "/tmp/yabai.err";
+                  #   };
+                  # };
 
                   home = {
                     username = username;
@@ -114,6 +124,31 @@
                     sessionVariables = {
                       EDITOR = "hx";
                     };
+
+                    # packages = with pkgs; [
+                    #   yabai
+                    #   skhd
+                    # ];
+
+                    # file.".skhdrc".text = ''
+                    #   alt - h : yabai -m window --focus west
+                    #   alt - j : yabai -m window --focus south
+                    #   alt - k : yabai -m window --focus north
+                    #   alt - l : yabai -m window --focus east
+                    # '';
+
+                    # file.".yabairc".text = ''
+                    #   yabai -m config layout bsp
+                    #   yabai -m config auto_balance on
+                    #   yabai -m config window_gap 8
+                    #   yabai -m config top_padding 10
+                    #   yabai -m config bottom_padding 10
+                    #   yabai -m config left_padding 10
+                    #   yabai -m config right_padding 10
+
+                    #   yabai -m rule --add app="System Settings" manage=off
+                    # '';
+
                   };
 
                   programs = {
@@ -214,6 +249,36 @@
         base =
           { config, pkgs, ... }:
           {
+            services.yabai = {
+  enable = true;
+  enableScriptingAddition = false;
+
+  config = {
+    layout = "bsp";
+    auto_balance = "on";
+    window_gap = 8;
+    top_padding = 10;
+    bottom_padding = 10;
+    left_padding = 10;
+    right_padding = 10;
+  };
+
+  extraConfig = ''
+    yabai -m rule --add app="System Settings" manage=off
+  '';
+};
+
+services.skhd = {
+  enable = true;
+
+  skhdConfig = ''
+    alt - h : yabai -m window --focus west
+    alt - j : yabai -m window --focus south
+    alt - k : yabai -m window --focus north
+    alt - l : yabai -m window --focus east
+  '';
+};
+
             system.stateVersion = 6;
             system.configurationRevision = self.rev or self.dirtyRev or null;
             system.primaryUser = username;
@@ -232,6 +297,8 @@
             # System Packages
             ########################################
             environment.systemPackages = with pkgs; [
+              yabai
+              skhd
               helix
               mkalias
               gnupg
