@@ -225,7 +225,14 @@
               };
 
               extraConfig = ''
-                yabai -m rule --add app="System Settings" manage=off
+                yabai -m rule --add app=".*" manage=off
+                yabai -m rule --add app="^Zen$" manage=on
+                yabai -m rule --add app="^Ghostty$" manage=on
+                yabai -m rule --add app="^Obsidian$" manage=on
+                yabai -m rule --add app="^Anki$" manage=on
+                yabai -m rule --add app="^ChatGPT Atlas$" manage=on
+                yabai -m rule --add app="^Notion$" manage=on
+                yabai -m rule --add app="^Notion Calendar$" manage=on
               '';
             };
 
@@ -263,10 +270,13 @@
                 # ---------- Resize (nudges; works for tiled and floating in different ways) ----------
                 # Tiled windows: yabai interprets these as changing split ratios.
                 # Floating windows: it resizes the actual frame.
-                ctrl + alt + cmd - h : yabai -m window --resize left:-50:0
-                ctrl + alt + cmd - j : yabai -m window --resize bottom:0:50
-                ctrl + alt + cmd - k : yabai -m window --resize top:0:-50
-                ctrl + alt + cmd - l : yabai -m window --resize right:50:0
+                # Resize: horizontal
+                ctrl + alt + cmd - h : yabai -m window --resize left:50:0  || yabai -m window --resize right:-50:0
+                ctrl + alt + cmd - l : yabai -m window --resize left:-50:0 || yabai -m window --resize right:50:0
+
+                # Resize: vertical
+                ctrl + alt + cmd - k : yabai -m window --resize top:0:50    || yabai -m window --resize bottom:0:-50
+                ctrl + alt + cmd - j : yabai -m window --resize top:0:-50   || yabai -m window --resize bottom:0:50
 
                 # ---------- Quality-of-life toggles ----------
                 ctrl + alt - g : yabai -m space --toggle gap
