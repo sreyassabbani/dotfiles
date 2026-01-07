@@ -96,25 +96,11 @@
               users.${username} =
                 { pkgs, ... }:
                 {
-                  # imports = [
-                  #   inputs.spicetify-nix.homeManagerModules.spicetify
-                  # ];
-
                   imports = [
                     ./home/zsh.nix
                     ./home/helix.nix
                     ./home/git.nix
                   ];
-                  # launchd.agents.yabai = {
-                  #   enable = true;
-                  #   config = {
-                  #     ProgramArguments = [ "${pkgs.yabai}/bin/yabai" ];
-                  #     RunAtLoad = true;
-                  #     KeepAlive = true;
-                  #     StandardOutPath = "/tmp/yabai.out";
-                  #     StandardErrorPath = "/tmp/yabai.err";
-                  #   };
-                  # };
 
                   home = {
                     username = username;
@@ -124,31 +110,6 @@
                     sessionVariables = {
                       EDITOR = "hx";
                     };
-
-                    # packages = with pkgs; [
-                    #   yabai
-                    #   skhd
-                    # ];
-
-                    # file.".skhdrc".text = ''
-                    #   alt - h : yabai -m window --focus west
-                    #   alt - j : yabai -m window --focus south
-                    #   alt - k : yabai -m window --focus north
-                    #   alt - l : yabai -m window --focus east
-                    # '';
-
-                    # file.".yabairc".text = ''
-                    #   yabai -m config layout bsp
-                    #   yabai -m config auto_balance on
-                    #   yabai -m config window_gap 8
-                    #   yabai -m config top_padding 10
-                    #   yabai -m config bottom_padding 10
-                    #   yabai -m config left_padding 10
-                    #   yabai -m config right_padding 10
-
-                    #   yabai -m rule --add app="System Settings" manage=off
-                    # '';
-
                   };
 
                   programs = {
@@ -269,49 +230,49 @@
             };
 
             services.skhd = {
-  enable = true;
+              enable = true;
 
-  skhdConfig = ''
-    # ---------- Focus (keep your existing muscle memory) ----------
-    alt - h : yabai -m window --focus west
-    alt - j : yabai -m window --focus south
-    alt - k : yabai -m window --focus north
-    alt - l : yabai -m window --focus east
+              skhdConfig = ''
+                # ---------- Focus (keep your existing muscle memory) ----------
+                alt - h : yabai -m window --focus west
+                alt - j : yabai -m window --focus south
+                alt - k : yabai -m window --focus north
+                alt - l : yabai -m window --focus east
 
-    # ---------- Swap (reorder without changing the BSP structure) ----------
-    alt + shift - h : yabai -m window --swap west
-    alt + shift - j : yabai -m window --swap south
-    alt + shift - k : yabai -m window --swap north
-    alt + shift - l : yabai -m window --swap east
+                # ---------- Swap (reorder without changing the BSP structure) ----------
+                alt + shift - h : yabai -m window --swap west
+                alt + shift - j : yabai -m window --swap south
+                alt + shift - k : yabai -m window --swap north
+                alt + shift - l : yabai -m window --swap east
 
-    # ---------- Warp (move window into that direction in the tree) ----------
-    ctrl + alt - h : yabai -m window --warp west
-    ctrl + alt - j : yabai -m window --warp south
-    ctrl + alt - k : yabai -m window --warp north
-    ctrl + alt - l : yabai -m window --warp east
+                # ---------- Warp (move window into that direction in the tree) ----------
+                ctrl + alt - h : yabai -m window --warp west
+                ctrl + alt - j : yabai -m window --warp south
+                ctrl + alt - k : yabai -m window --warp north
+                ctrl + alt - l : yabai -m window --warp east
 
-    # ---------- Float / Zoom ----------
-    alt - space : yabai -m window --toggle float
-    alt - f     : yabai -m window --toggle zoom-fullscreen
+                # ---------- Float / Zoom ----------
+                alt - space : yabai -m window --toggle float
+                alt - f     : yabai -m window --toggle zoom-fullscreen
 
-    # ---------- Space layout hygiene ----------
-    ctrl + alt - b : yabai -m space --balance
-    ctrl + alt - r : yabai -m space --rotate 90
-    ctrl + alt - m : yabai -m space --mirror x-axis
+                # ---------- Space layout hygiene ----------
+                ctrl + alt - b : yabai -m space --balance
+                ctrl + alt - r : yabai -m space --rotate 90
+                ctrl + alt - m : yabai -m space --mirror x-axis
 
-    # ---------- Resize (nudges; works for tiled and floating in different ways) ----------
-    # Tiled windows: yabai interprets these as changing split ratios.
-    # Floating windows: it resizes the actual frame.
-    ctrl + alt + cmd - h : yabai -m window --resize left:-50:0
-    ctrl + alt + cmd - j : yabai -m window --resize bottom:0:50
-    ctrl + alt + cmd - k : yabai -m window --resize top:0:-50
-    ctrl + alt + cmd - l : yabai -m window --resize right:50:0
+                # ---------- Resize (nudges; works for tiled and floating in different ways) ----------
+                # Tiled windows: yabai interprets these as changing split ratios.
+                # Floating windows: it resizes the actual frame.
+                ctrl + alt + cmd - h : yabai -m window --resize left:-50:0
+                ctrl + alt + cmd - j : yabai -m window --resize bottom:0:50
+                ctrl + alt + cmd - k : yabai -m window --resize top:0:-50
+                ctrl + alt + cmd - l : yabai -m window --resize right:50:0
 
-    # ---------- Quality-of-life toggles ----------
-    ctrl + alt - g : yabai -m space --toggle gap
-    ctrl + alt - p : yabai -m space --toggle padding
-  '';
-};
+                # ---------- Quality-of-life toggles ----------
+                ctrl + alt - g : yabai -m space --toggle gap
+                ctrl + alt - p : yabai -m space --toggle padding
+              '';
+            };
 
             system.stateVersion = 6;
             system.configurationRevision = self.rev or self.dirtyRev or null;
