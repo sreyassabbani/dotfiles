@@ -13,34 +13,31 @@
       dr = "sudo darwin-rebuild switch --flake ~/nix#${config.home.username}-${pkgs.stdenv.hostPlatform.system}";
     };
 
-    # In Home Manager this is typically initExtra, but keeping your initContent as-is.
     initContent = ''
       setopt PROMPT_SUBST
 
       function update_prompt() {
-        PROMPT=""
+        PROMPT=$'\n'
 
-        if [[ $PWD == $HOME ]]; then
-          PROMPT+=$'\n'
-        else
-          PROMPT+=$'\n%F{242}%~\n'
+        if [[ $PWD != $HOME ]]; then
+          PROMPT+="%F{#737994}%~%f"$'\n'
         fi
 
-        PROMPT+=$'%F{130}%n %F{216}[λ]%f '
+        PROMPT+="%F{#8caaee}%n%f %F{#f4b8e4}[λ]%f "
       }
 
-      PS2=$'%F{242} [...]%f '
+      PS2="%F{#737994} [...]%f "
 
       autoload -U add-zsh-hook
       add-zsh-hook chpwd update_prompt
       update_prompt
 
-      RPROMPT='%F{242}$(git rev-parse --is-inside-work-tree 2>/dev/null && echo "git:") %F{240}$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f'
+      RPROMPT='%F{$CTP_OVERLAY0}$(git rev-parse --is-inside-work-tree 2>/dev/null && echo "git:") %F{$CTP_SURFACE2}$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f'
 
-      ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[245]%}[git:"
-      ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-      ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[242]%}] ✖ %{$reset_color%}"
-      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[242]%}] ✔%{$reset_color%}"
+      ZSH_THEME_GIT_PROMPT_PREFIX="%F{$CTP_OVERLAY0}[git:"
+      ZSH_THEME_GIT_PROMPT_SUFFIX="%f"
+      ZSH_THEME_GIT_PROMPT_DIRTY="%F{$CTP_OVERLAY0}] ✖ %f"
+      ZSH_THEME_GIT_PROMPT_CLEAN="%F{$CTP_OVERLAY0}] ✔%f"
 
       eval "$(zoxide init --cmd cd zsh)"
 

@@ -4,7 +4,7 @@
     enable = true;
 
     settings = {
-      theme = "gruvbox";
+      theme = "catppuccin_frappe";
 
       editor = {
         "line-number" = "relative";
