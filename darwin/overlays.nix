@@ -1,0 +1,5 @@
+{ vscodeExtensionsOverlay }:
+{ ... }:
+{
+  nixpkgs.overlays = [ vscodeExtensionsOverlay ];
+}

@@ -1,0 +1,26 @@
+{ ... }:
+{
+  programs.ghostty = {
+    enable = true;
+
+    # Important: don't use pkgs.ghostty on macOS right now, it's broken.
+    package = null;
+
+    # Optional, but safe: avoids bat-syntax issues on mac
+    installBatSyntax = false;
+
+    settings = {
+      theme = "Catppuccin Frappe";
+
+      window-padding-x = 30;
+      # window-padding-y = "40,0"; # if you want this later
+
+      font-size = 16;
+
+      keybind = [
+        "global:cmd+grave_accent=toggle_quick_terminal"
+        "shift+enter=text:\\n"
+      ];
+    };
+  };
+}
