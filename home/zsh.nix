@@ -54,7 +54,7 @@
 {
   inputs = {
     # FlakeHub nixpkgs: "0" tracks the current stable nixpkgs channel on FlakeHub
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.tar.gz";
+    nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0.tar.gz";
 
     flake-utils.url = "github:numtide/flake-utils";
   };
