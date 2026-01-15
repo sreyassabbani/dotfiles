@@ -8,6 +8,7 @@
     gnupg
     pinentry_mac
     fastfetch
+    dust
     git
     # spicetify-cli
     ripgrep
