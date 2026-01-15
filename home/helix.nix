@@ -101,6 +101,10 @@
       language = [
         {
           name = "java";
+          "language-servers" = [
+            "jdtls"
+            "scls"
+          ];
           formatter = {
             command = "google-java-format";
             args = ["-"];
@@ -202,6 +206,10 @@
       ];
 
       "language-server" = {
+        jdtls = {
+          command = "jdtls";
+        };
+
         basedpyright = {
           command = "basedpyright-langserver";
           args = [ "--stdio" ];
@@ -215,7 +223,14 @@
         nixd = {
           command = "nixd";
         };
+
+        scls = {
+          command = "simple-completion-language-server";
+        };
       };
     };
   };
+
+  home.file.".config/helix/languages/java.toml".source = ./helix/languages/java.toml;
+  home.file.".config/scls/config.toml".source = ./scls/config.toml;
 }

@@ -1,0 +1,13 @@
+[scanner]
+prefix = ["scanner", "scn"]
+body = [
+  "import java.util.Scanner;",
+  "",
+  "public class ${1:Main} {",
+  "    public static void main(String[] args) {",
+  "        Scanner ${2:scanner} = new Scanner(System.in);",
+  "        ${0}",
+  "    }",
+  "}",
+]
+description = "Java Scanner boilerplate"

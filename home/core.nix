@@ -1,4 +1,4 @@
-{ username, ... }:
+{ username, pkgs, ... }:
 {
   home = {
     username = username;
@@ -8,6 +8,9 @@
     sessionVariables = {
       EDITOR = "hx";
     };
+    packages = [
+      pkgs.simple-completion-language-server
+    ];
   };
 
   programs.home-manager.enable = true;
