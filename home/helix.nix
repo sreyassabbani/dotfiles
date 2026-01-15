@@ -185,9 +185,11 @@
             "shell.nix"
             "default.nix"
           ];
+          "language-servers" = [ "nixd" ];
           formatter = {
             command = "nixfmt";
           };
+          "auto-format" = true;
         }
       ];
 
@@ -200,6 +202,10 @@
         ruff = {
           command = "ruff";
           args = [ "server" ];
+        };
+
+        nixd = {
+          command = "nixd";
         };
       };
     };
