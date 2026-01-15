@@ -16,6 +16,7 @@
     defaultbrowser
     fd
     nixfmt-rfc-style
+    nixd
     zoxide
     fzf
   ];
