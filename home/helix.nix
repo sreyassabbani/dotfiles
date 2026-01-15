@@ -100,6 +100,14 @@
 
       language = [
         {
+          name = "java";
+          formatter = {
+            command = "google-java-format";
+            args = ["-"];
+          };
+          auto-format = true;
+        }
+        {
           name = "typst";
           formatter.command = "typstyle";
           "auto-format" = true;
