@@ -19,5 +19,6 @@
     nixd
     zoxide
     fzf
+    (inkscape-with-extensions.override { inkscapeExtensions = [ inkscape-extensions.textext ]; })
   ];
 }
