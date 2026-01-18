@@ -100,6 +100,14 @@
 
       language = [
         {
+          name = "java";
+          roots = [
+            ".helix-root"
+            "build.gradle"
+            "pom.xml"
+          ];
+        }
+        {
           name = "typst";
           formatter.command = "typstyle";
           "auto-format" = true;
@@ -158,7 +166,11 @@
         {
           name = "cpp";
           scope = "source.cpp";
-          roots = [ ".clangd" "compile_commands.json" ".git" ];
+          roots = [
+            ".clangd"
+            "compile_commands.json"
+            ".git"
+          ];
           "file-types" = [
             "cpp"
             "h"
