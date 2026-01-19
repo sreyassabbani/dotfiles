@@ -9,6 +9,7 @@
       editor = {
         "line-number" = "relative";
         bufferline = "multiple";
+        cursorline = true;
         mouse = false;
         rulers = [ 120 ];
         "true-color" = true;
@@ -44,6 +45,8 @@
 
       keys = {
         normal = {
+          ret = "goto_word";
+
           space = {
             i = ":toggle lsp.display-inlay-hints";
             x = ":buffer-close";
@@ -53,6 +56,7 @@
             b = ":new";
             l = "select_all";
             z = ":toggle soft-wrap.enable";
+            o = "file_picker_in_current_buffer_directory";
           };
 
           X = "select_line_above";
