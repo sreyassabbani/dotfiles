@@ -48,6 +48,7 @@
           ret = "goto_word";
 
           space = {
+            I = ''@mi":run-shell-command typst-figure "%{selection}"<ret>'';
             i = ":toggle lsp.display-inlay-hints";
             x = ":buffer-close";
             q = ":q!";
@@ -103,14 +104,6 @@
       editor."auto-format" = true;
 
       language = [
-        {
-          name = "java";
-          roots = [
-            ".helix-root"
-            "build.gradle"
-            "pom.xml"
-          ];
-        }
         {
           name = "typst";
           formatter.command = "typstyle";

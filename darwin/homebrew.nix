@@ -15,6 +15,8 @@
       "ffmpeg"
       "gh"
       "tldr"
+      "tcl-tk"
+      "python"
       "tree"
     ];
 
@@ -23,6 +25,7 @@
       "hammerspoon"
       "google-chrome"
       "notion"
+      "inkscape"
       "obsidian"
       "codex"
       "microsoft-powerpoint"

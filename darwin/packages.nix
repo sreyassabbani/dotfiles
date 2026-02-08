@@ -4,6 +4,7 @@
     # yabai
     # skhd
     helix
+    typst
     mkalias
     gnupg
     pinentry_mac
@@ -12,6 +13,8 @@
     git
     # spicetify-cli
     ripgrep
+    just
+    jq
     fritzing
     defaultbrowser
     fd
